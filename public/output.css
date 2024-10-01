@@ -928,13 +928,14 @@ body {
   padding: 20px;
 }
 
-
+/*Media Query for top container in small screen takes the margin at the bottom of 20 pixels*/
 @media (max-width: 767px) {
   #top-container {
     margin-bottom: 20px;
   }
 }
 
+/*Media Query for top container in larger screen to appear side by side with gap between them*/
 @media (min-width: 768px) {
   #top-container {
     flex-direction: row;
@@ -975,19 +976,19 @@ body {
   width: 100%;
   max-width: 250px;
 }
-
+/*Media Query for 5-Day Forecast result for Smaller devices*/
 @media (min-width: 640px) {
   .forecast-grid {
       grid-template-columns: repeat(2, 1fr);
   }
 }
-
+/*Media Query for 5-Day Forecast result for Medium devices*/
 @media (min-width: 768px) {
   .forecast-grid {
       grid-template-columns: repeat(3, 1fr);
   }
 }
-
+/*Media Query for 5-Day Forecast result for Larger devices*/
 @media (min-width: 1024px) {
   .forecast-grid {
       grid-template-columns: repeat(5, 1fr);
