@@ -6,12 +6,13 @@
     <meta name="author" content="Saurav Keshri">
     <meta name="keywords" content="Weather App, Know Your Weather,Current Weather, Weather Forecast,Nearby Area Weather">
     <meta name="description" content="Stay Updated with Real Time Weather.Get Accurate Weather Forecast around the World. ">
-    <title>Weather Forecast App</title>
+    <title>WEATHER FORECAST APP</title>
     <link href="./public/output.css" rel="stylesheet">
 </head>
 <body>
-    <h1 id="main-heading" class="text-4xl text-center mt-5 font-bold text-white mb-4">WEATHER FORECAST</h1>
+    <h1 id="main-heading" class="text-4xl text-center mt-5 font-bold text-white mb-4">WEATHER FORECAST APP</h1>
     <div class="container mx-auto p-6">
+        <!-- Input Search For Weather of the Specific City -->
         <div id="top-container" class="flex flex-col md:flex-row justify-around space-y-4 md:space-y-0 md:space-x-4">
             <div class="top-inside-container flex-1 p-6 transition-transform duration-300 hover:scale-105">
                 <div id="input-search" class="mb-4">
@@ -19,6 +20,7 @@
                     <button id="searchBtn" class="bg-blue-600 text-white p-3 mt-4 rounded-lg shadow-md hover:bg-blue-700 transition">Search</button>
                     <button id="currentLocationBtn" class="bg-green-600 mt-2 text-white p-3 rounded-lg shadow-md hover:bg-green-700 transition w-full">Current Location</button>
                 </div>
+                <!-- Recent Cities Searched will be listed here -->
                 <div id="recentCitiesDropdown">
                     <select id="recentCities" class="border border-gray-300 rounded-lg p-2 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400">
                     </select>
@@ -26,6 +28,7 @@
             </div>
             <div id="results">
                 <div class="flex-1 p-6 transition-transform duration-300 hover:scale-105">
+                    <!-- Weather of the Searched Location will be displayed here -->
                     <div id="weatherDisplay" class="p-4"></div>
                 </div>  
             </div>
@@ -33,6 +36,7 @@
     </div> 
     <div id="foreCastContainer" class="mt-6">
         <h2 id="heading" class="font-bold text-gray-800 text-center">5-Day Forecast</h2>
+        <!-- 5-Days Forecast will be displayed here -->
         <div id="extendedForecast"></div>
     </div>
     <script src="./src/script.js"></script>
