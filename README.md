@@ -19,8 +19,12 @@
  ## Usage
  1. Enter the City  Name in the Input Field with Placeholder Enter City Name.
  2. Then Click the Search Button to fetch the weather information.
- 3. View the weather of a specific location displayed on the screen with its extended 5-Day Forecasst
+ 3. View the weather of a specific location displayed on the screen with its extended 5-Day Forecast
 
+ ## Access
+ - You can access the Weather App through my Github Link:
+   https://sauravkk14.github.io/weather-app-project/
+   
  ## Installation
  1. Open your cmd Terminal using Ctrl + Shift + `
 
