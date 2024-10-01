@@ -1,4 +1,4 @@
-const apiKey = '4874183aa6c78f710ca668bc0cee795e';
+const apiKey = '4874183aa6c78f710ca668bc0cee795e'; // openweatherapp api key
 const searchBtn = document.getElementById('searchBtn');
 const currentLocationBtn = document.getElementById('currentLocationBtn');
 const cityInput = document.getElementById('cityInput');
@@ -12,35 +12,37 @@ const result = document.getElementById("results");
 foreCastHeading.style.display = "none";
 result.style.display="none";
 
-
+// function fetchCurrentLocationWeather is created for fetching current location using navigator object inside windows object
 const fetchCurrentLocationWeather = () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
             const { latitude, longitude } = position.coords;
             fetchWeatherByCoords(latitude, longitude);
         }, () => {
+            // if user blocks the request for fetching their geolocation the message will be shown
             alert("Unable to retrieve your location.");
         });
-    } else {
+    } else {// if browser does not support to fetch geolocation
         alert("Geolocation is not supported by this browser.");
     }
 };
 
-
+// function validateCityinput is created to check whether the input city field is empty or not with regular expression
 const validateCityInput = (city) => {
     if (!city) {
         alert("City name cannot be empty.");
         return false;
     }
-    const regex = /^[a-zA-Z\s]+$/;
-    if (!regex.test(city)) {
+    const regexp = /^[a-zA-Z\s]+$/;
+    if (!regexp.test(city)) {
         alert("Invalid city name. Please enter a valid location.");
         return false;
     }
     return true;
 };
 
-
+/*fetchWeather function is created to fetch the data from the openweather app using key and if the fetch is successful then returns the
+  data of the json file to the function which will further do their activities  */
 const fetchWeather = (city) => {
     if (!validateCityInput(city)) {
         return;
@@ -48,6 +50,7 @@ const fetchWeather = (city) => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
         .then(response => {
             if (!response.ok) {
+                // if there is any issue while fetching from the server it shows an error
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
             return response.json();
@@ -59,22 +62,24 @@ const fetchWeather = (city) => {
             recentCitiesSelect.value = '';
         })
         .catch(error => {
+            //if there is any issue while fetching from the server it shows an error with throw error
             weatherDisplay.innerHTML = `<p class="text-red-500">Error occurred: ${error.message}</p>`;
         });
 };
 
-
+//fetchWeatherByCoords is created for searching the location according to the longitude and latitude
 const fetchWeatherByCoords = (latitude, longitude) => {
     fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then(data => {
             displayWeather(data);
         })
+        //if any error while fetching location coordinates then it will show an error
         .catch(error => {
             weatherDisplay.innerHTML = `<p class="text-red-500">Error occurred: ${error.message}</p>`;
         });
 };
-
+//displayWeather is created to show the weather which user seached for
 const displayWeather = (data) => {
     result.style.display = "block";
     const { main, wind, weather } = data;
@@ -94,7 +99,7 @@ const displayWeather = (data) => {
 };
 
 
-
+// for recent city to be saved in localstorage, saveRecentCity is created
 const saveRecentCity = (city) => {
     let recentCities = JSON.parse(localStorage.getItem('recentCities')) || [];
     if (!recentCities.includes(city)) {
@@ -104,6 +109,7 @@ const saveRecentCity = (city) => {
     }
 };
 
+//updateRecetnCitiesDropdown is created to get the cities from local storage and show them in display
 const updateRecentCitiesDropdown = () => {
     const recentCities = JSON.parse(localStorage.getItem('recentCities')) || [];
     recentCitiesDropdown.classList.toggle('hidden', recentCities.length === 0);
@@ -116,7 +122,7 @@ const updateRecentCitiesDropdown = () => {
         recentCitiesSelect.appendChild(option);
     });
 
-
+//updateRecentCitiedDropdown is created to show the city which user has clicked from the dropdown
     recentCitiesSelect.addEventListener('change', (event) => {
         const selectedCity = event.target.value;
         if (selectedCity) {
@@ -132,31 +138,34 @@ const updateRecentCitiesDropdown = () => {
 
 updateRecentCitiesDropdown();
 
-
+//fetchExtendedForeCast is created to fetch the 5-Day Forecast data from the server 
 const fetchExtendedForecast = (lat, lon) => {
     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
         .then(response => response.json())
         .then(data => {
             displayExtendedForecast(data);
         })
+        // if there is any error while fetching then it will show an error
         .catch(error => {
             extendedForecast.innerHTML = `<p class="text-red-500">Error occurred: ${error.message}</p>`;
         });
 };
 
-
+//displayEntendedFooreCast is created to show the 5-Day Forecast Weather
 const displayExtendedForecast = (data) => {
     foreCastHeading.style.display = "block";
     const forecastDays = {};
 
     data.list.forEach(item => {
+        //dt_txt split the string and return the date only
         const date = item.dt_txt.split(' ')[0];
         if (!forecastDays[date]) {
             forecastDays[date] = [];
         }
         forecastDays[date].push(item);
     });
-
+    // Here Object.keys gets an array of keys from the object of foreCastDays object
+    // And slice put the only first 5 days weather forecast keys to an array
     const dayKeys = Object.keys(forecastDays).slice(0, 5);
 
 
@@ -174,11 +183,16 @@ const displayExtendedForecast = (data) => {
         const icon = items[0].weather[0].icon;
         const description = items[0].weather[0].description;
 
+        /*Here Date is an Object from which we are getting out the local Date and setting the date in
+         Indian format having 2 digit number, 2digit month, year will be numeric*/
         const formattedDate = new Date(date).toLocaleDateString('en-IN', {
             day: '2-digit', 
             month: '2-digit',
             year: 'numeric'
-        }).replace(/\//g, '-');
+        }).replace(/\//g, '-'); //replace is used to replace the "\/" with "-"
+
+
+        //Cards are made to show the output 5-Day Weather Forecast to display
 
         const forecastCard = document.createElement('div');
         forecastCard.className = 'forecast-card';
@@ -201,16 +215,18 @@ const displayExtendedForecast = (data) => {
 
 
 
-
+// Search Button Event Handler
 searchBtn.addEventListener('click', () => {
-    const city = cityInput.value.trim();
+    const city = cityInput.value.trim(); //trim removes the extra spaces from string if any
     fetchWeather(city);
 });
 
+// Current Button Event Handler
 currentLocationBtn.addEventListener('click', () => {
     fetchCurrentLocationWeather();
 });
 
+// Event Handler using Enter Key
 cityInput.addEventListener('keypress', (event) => {
     if (event.key === 'Enter') {
         const city = cityInput.value.trim();
@@ -221,7 +237,7 @@ cityInput.addEventListener('keypress', (event) => {
 
 updateRecentCitiesDropdown();
 
-
+// recent cities change .....thorugh changing the option ....using Change Event Handler
 recentCitiesSelect.addEventListener('change', (event) => {
     const city = recentCitiesSelect.value;
     if (city) {
